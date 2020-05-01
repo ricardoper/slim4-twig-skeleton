@@ -346,12 +346,12 @@ Command: siege -c25 -b -r500 "URL"<br/>
 | --- | :----: | :---: |
 | Transactions | 12500 hits | 12500 hits |
 | Availability | 100.00 % | 100.00 % |
-| Elapsed time | 9.16 secs | 8.80 secs |
-| Data transferred | 0.45 MB | 0.45 MB |
+| Elapsed time | 12.31 secs | 8.80 secs |
+| Data transferred | 0.89 MB | 0.45 MB |
 | Response time | 0.02 secs | 0.02 secs |
-| Transaction rate | 1364.63 trans/sec | 1420.45 trans/sec |
-| Throughput | 0.05 MB/sec | 0.05 MB/sec |
-| Concurrency | 24.49 | 24.51|
+| Transaction rate | 1015.43 trans/sec | 1420.45 trans/sec |
+| Throughput | 0.07 MB/sec | 0.05 MB/sec |
+| Concurrency | 24.68 | 24.51|
 | Successful transactions | 12500 | 12500 |
 | Failed transactions | 0 | 0 |
 | Longest transaction | 0.05 | 0.05 |
