@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Services\Demo;
+namespace App\Kernel\Services;
 
 use App\Kernel\Interfaces\ServiceProviderInterface;
 use Pimple\Container;
+use Slim\Views\Twig;
 
-class ExampleServiceProvider implements ServiceProviderInterface
+class ViewServiceProvider implements ServiceProviderInterface
 {
 
     /**
@@ -14,7 +15,7 @@ class ExampleServiceProvider implements ServiceProviderInterface
      */
     public function name(): string
     {
-        return 'example';
+        return 'view';
     }
 
     /**
@@ -25,10 +26,10 @@ class ExampleServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $container)
     {
-        return function (Container $c) {
-            unset($c);
+        return function (Container $container) {
+            $configs = $container['configs']->get('view');
 
-            return new Example();
+            return Twig::create($configs['templates'], $configs);
         };
     }
 }

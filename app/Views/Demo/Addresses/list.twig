@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Addresses</title>
+
+    <style>
+        * {margin: 0;padding: 0;box-sizing: border-box}
+        html, body {height: 100%}
+        body {padding: 4em 8em;background-color: #E6E6E6;line-height: 1.6;-webkit-font-smoothing: antialiased;font-family: 'Lato', sans-serif;font-size: 13px;color: #444}
+        h3 {text-align: center;font-weight: 700;font-size: 2.6em;margin-bottom: 15px;font-variant: small-caps}
+        main {background-color: #2C3845;border-radius: 6px;box-shadow: 5px 5px 10px 0 rgba(0,0,0,0.35);margin-bottom: 40px}
+        table {display: block;color: #FFF;border-radius: 6px}
+        tr, td, tbody{display: block}
+        thead {display: none}
+        tr {padding-bottom: 10px}
+        td {padding: 10px 10px 0;text-align: center}
+        td:before {content: attr(data-title);color: #7a91aa;text-transform: uppercase;font-size: 1.4rem;padding-right: 10px;display: block}
+        table {width: 100%}
+        th {text-align: left;font-weight: 700}
+        thead th {background-color: #202932;color: #fff;border: 1px solid #202932}
+        td {text-align: left}
+        td:before {display: inline-block;text-align: right;width: 140px}
+        table {display: table}
+        tr {display: table-row}
+        td, th {display: table-cell}
+        tbody {display: table-row-group}
+        thead {display: table-header-group}
+        td {border: 1px solid #28333f}
+        td:before {display: none}
+        td, th {padding: 10px}
+        tr:nth-child(2n+2) td {background-color: #242e39}
+        small {margin-bottom: 40px;display:block}
+    </style>
+</head>
+<body>
+<h3>Addresses</h3>
+<main>
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th>Address</th>
+            <th>District</th>
+            <th>City</th>
+            <th>Postal Code</th>
+            <th>Phone</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in addresses %}
+        <tr>
+            <td>#{{ item.address_id }}</td>
+            <td>{{ item.address }}</td>
+            <td>{{ item.district }}</td>
+            <td>{{ item.city }}</td>
+            <td>{{ item.postal_code }}</td>
+            <td>{{ item.phone }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</main>
+<hr>
+<small>{{ "now"|date("Y-m-d H:i:s") }}</small>
+</body>
+</html>

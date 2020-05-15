@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Kernel\Controllers;
+namespace App\Kernel\Abstracts;
 
 use App\Emitters\HtmlResponseEmitter;
-use App\Kernel\App;
-use Pimple\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Flash\Messages;
 use Slim\Views\Twig;
@@ -13,109 +11,8 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-abstract class ControllerAbstract
+abstract class ControllerAbstract extends KernelAbstract
 {
-
-    /**
-     * App
-     *
-     * @var App
-     */
-    protected $app;
-
-    /**
-     * Configs
-     *
-     * @var array
-     */
-    protected $configs;
-
-    /**
-     * App
-     *
-     * @var Container
-     */
-    protected $container;
-
-
-    /**
-     * Controller constructor
-     */
-    public function __construct()
-    {
-        $this->app = app();
-
-        $this->configs = $this->app->getConfigs();
-
-        $this->container = $this->app->getContainer();
-    }
-
-
-    /**
-     * Get App
-     *
-     * @return App
-     */
-    protected function getApp(): App
-    {
-        return $this->app;
-    }
-
-    /**
-     * Get Container
-     *
-     * @param string|null $name
-     * @return mixed|null
-     */
-    protected function getContainer(string $name = null)
-    {
-        if ($name === null) {
-            return $this->container;
-        }
-
-        return $this->container[$name] ?? null;
-    }
-
-    /**
-     * Get Configs
-     *
-     * @param string|null $name
-     * @param mixed $default
-     * @return mixed|null
-     */
-    protected function getConfigs(string $name = null, $default = null)
-    {
-        $configs = $this->configs ?? null;
-
-        if ($name === null) {
-            return $configs;
-        } else if ($configs === null) {
-            return $default;
-        }
-
-        return $configs[$name] ?? $default;
-    }
-
-    /**
-     * Get Service From Container
-     *
-     * @param string $name
-     * @return mixed|null
-     */
-    protected function getService(string $name)
-    {
-        return $this->container[$name] ?? null;
-    }
-
-    /**
-     * Get Response
-     *
-     * @return Response
-     */
-    protected function getResponse(): Response
-    {
-        return $this->container['response'];
-    }
 
     /**
      * Set Emitter
@@ -124,11 +21,9 @@ abstract class ControllerAbstract
      */
     protected function setEmitter(string $emitter): void
     {
-        $settings = $this->container['settings'];
+        $configs = $this->container['configs'];
 
-        $settings['emitters'] = array_merge($settings['emitters'], [$emitter]);
-
-        $this->container['settings'] = $settings;
+        $configs->set('emitters', array_merge($configs->get('emitters'), [$emitter]));
     }
 
     /**

@@ -1,29 +1,20 @@
 <?php
 declare(strict_types=1);
 
-use App\Handlers\ShutdownHandler;
-use Slim\Handlers\ErrorHandler;
-
 return [
 
-    // Debugging //
+    // Application Details //
+    'env' => env('APP_ENV', null),
+
+    'timezone' => 'UTC',
+
+
+    // App Debugging //
     'debug' => env('APP_DEBUG', false),
+    'displayErrorDetails' => env('APP_DEBUG', false),
+
     'logErrors' => env('LOG_ERRORS', true),
     'logErrorDetails' => env('LOG_ERRORS_DETAILS', true),
-    'displayErrorDetails' => env('APP_DEBUG', false),
-    'logToOutput'  => env('LOG_TO_OUTPUT', false),
-
-
-    // Handlers //
-    'errorHandler' => ErrorHandler::class,
-    'shutdownHandler' => ShutdownHandler::class,
-
-
-    // Includes //
-    'view' => require 'view.php',
-    'logger' => require 'logger.php',
-    'services' => require 'services.php',
-    'emitters' => require 'emitters.php',
-    'middlewares' => require 'middlewares.php',
+    'logToOutput' => env('LOG_TO_OUTPUT', false),
 
 ];

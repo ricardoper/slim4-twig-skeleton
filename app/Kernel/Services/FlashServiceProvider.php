@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
+namespace App\Kernel\Services;
 
-namespace App\Services;
-
-use App\Kernel\ServiceProviderInterface;
-use Closure;
+use App\Kernel\Interfaces\ServiceProviderInterface;
 use Pimple\Container;
 use Slim\Flash\Messages;
 
@@ -23,10 +21,10 @@ class FlashServiceProvider implements ServiceProviderInterface
     /**
      * Register new service on dependency container
      *
-     * @param Container $c
-     * @return Closure
+     * @param Container $container
+     * @return mixed
      */
-    public function register(Container $c): Closure
+    public function register(Container $container)
     {
         return function () {
             return new Messages;
