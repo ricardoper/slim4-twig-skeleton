@@ -10,6 +10,7 @@ use Pimple\Container;
 use Pimple\Psr11\Container as PsrContainer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App as SlimApp;
 use Slim\Factory\ServerRequestCreatorFactory;
@@ -149,9 +150,9 @@ class App
 
         $this->setRouteStrategy();
 
-        $this->registerServices();
+        $this->registerAppServices();
 
-        $this->registerMiddlewares();
+        $this->registerAppMiddlewares();
 
         $this->registerRoutes();
 
@@ -187,35 +188,20 @@ class App
     {
         $services = require base_path('bootstrap/services.php');
 
-        if (is_array($services) && !empty($services)) {
-            foreach ($services as $service) {
-                if (!class_exists($service)) {
-                    throw new KernelException('Bootstrap Service Provider "' . $service . '" Not Found');
-                }
-
-                /**
-                 * @var $instance ServiceProviderInterface
-                 */
-                $instance = new $service();
-
-                $this->container[$instance->name()] = $instance->register($this->container);
-            }
-        }
+        $this->registerServices($services);
     }
 
     /**
      * Register Bootstrap Middlewares
+     *
+     * @throws KernelException
      */
     protected function registerBootstrapMiddlewares(): void
     {
         $middlewares = require base_path('bootstrap/middlewares.php');
         $middlewares = array_reverse($middlewares);
 
-        if (is_array($middlewares) && !empty($middlewares)) {
-            foreach ($middlewares as $middleware) {
-                $this->slimApp->add($middleware);
-            }
-        }
+        $this->registerMiddlewares($middlewares);
     }
 
     /**
@@ -309,36 +295,27 @@ class App
     }
 
     /**
-     * Register Services
+     * Register App Services
+     *
+     * @throws KernelException
      */
-    protected function registerServices(): void
+    protected function registerAppServices(): void
     {
         $services = $this->configs->get('services');
 
-        if (is_array($services) && !empty($services)) {
-            foreach ($services as $service) {
-                /**
-                 * @var $instance ServiceProviderInterface
-                 */
-                $instance = new $service();
-
-                $this->container[$instance->name()] = $instance->register($this->container);
-            }
-        }
+        $this->registerServices($services);
     }
 
     /**
-     * Register Middlewares
+     * Register App Middlewares
+     *
+     * @throws KernelException
      */
-    protected function registerMiddlewares(): void
+    protected function registerAppMiddlewares(): void
     {
         $middlewares = array_reverse($this->configs->get('middlewares'));
 
-        if (is_array($middlewares) && !empty($middlewares)) {
-            foreach ($middlewares as $middleware) {
-                $this->slimApp->add($middleware);
-            }
-        }
+        $this->registerMiddlewares($middlewares);
     }
 
     /**
@@ -372,6 +349,62 @@ class App
             }
 
             (new ResponseEmitter())->emit($response);
+        }
+    }
+
+    /**
+     * Register Services
+     *
+     * @param array $services
+     * @throws KernelException
+     */
+    protected function registerServices(array $services): void
+    {
+        if (is_array($services) && !empty($services)) {
+            foreach ($services as $service) {
+                if (!class_exists($service)) {
+                    throw new KernelException('"' . $service . '" Not Found');
+                }
+
+                /**
+                 * @var $instance ServiceProviderInterface
+                 */
+                $instance = new $service();
+
+                if (!$instance instanceof ServiceProviderInterface) {
+                    throw new KernelException('"' . $service . '" must implements ServiceProviderInterface');
+                }
+
+                $this->container[$instance->name()] = $instance->register($this->container);
+            }
+        }
+    }
+
+    /**
+     * Register Middlewares
+     *
+     * @param array $middlewares
+     * @throws KernelException
+     */
+    protected function registerMiddlewares(array $middlewares): void
+    {
+        if (is_array($middlewares) && !empty($middlewares)) {
+            foreach ($middlewares as $middleware) {
+                if (!class_exists($middleware)) {
+                    throw new KernelException('"' . $middleware . '" Not Found');
+                }
+
+                /**
+                 * @var $instance MiddlewareInterface
+                 */
+                $instance = new $middleware();
+
+                if (!$instance instanceof MiddlewareInterface) {
+                    throw new KernelException('"' . $middleware . '" must implements MiddlewareInterface');
+                }
+
+                $this->slimApp->add($instance);
+            }
         }
     }
 }
