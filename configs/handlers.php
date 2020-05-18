@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use App\Handlers\ErrorHandler;
 use App\Handlers\ShutdownHandler;
-use Slim\Handlers\ErrorHandler;
 
 return [
 
