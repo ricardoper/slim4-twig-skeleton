@@ -6,10 +6,10 @@ namespace App\Handlers;
 use App\Handlers\Helpers\Severity;
 use App\Handlers\Renderers\HtmlErrorRenderer;
 use App\Handlers\Renderers\JsonErrorRenderer;
+use App\Handlers\Renderers\PlainTextErrorRenderer;
+use App\Handlers\Renderers\XmlErrorRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Error\Renderers\PlainTextErrorRenderer;
-use Slim\Error\Renderers\XmlErrorRenderer;
 use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Handlers\ErrorHandler as SlimErrorHandler;
@@ -23,10 +23,11 @@ class ErrorHandler extends SlimErrorHandler
      * @var array
      */
     protected $errorRenderers = [
+        'text/html' => HtmlErrorRenderer::class,
         'application/json' => JsonErrorRenderer::class,
+        'text/json' => JsonErrorRenderer::class,
         'application/xml' => XmlErrorRenderer::class,
         'text/xml' => XmlErrorRenderer::class,
-        'text/html' => HtmlErrorRenderer::class,
         'text/plain' => PlainTextErrorRenderer::class,
     ];
 
