@@ -11,7 +11,6 @@ This project use PHP [Composer](https://getcomposer.org/) for a fast installatio
   + Views
   + Logger
   + Routes
-  + Configs
   + Handlers
   + Middlewares
   + Configurations
