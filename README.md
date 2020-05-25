@@ -249,7 +249,7 @@ class HomeController extends ControllerAbstract
 - `getService(string $service)` - Returns *Service Provider* from container by name
 - `getRequest()` - Returns *HTTP Request*
 - `getResponse()` - Returns *HTTP Response*
-- `setEmitter(string $emitter)` : Set a new *Response Emitter*
+- `setEmitter(string $name, string $emitter)` : Set a new *Response Emitter*
 - `getView()` - Returns *Twig* object
 - `render(string $template, array $data, bool $sendHeaders)` - Render *Twig* view
 
@@ -339,7 +339,7 @@ use App\Middlewares\Demo\ExampleMiddleware;
 
 return [
 
-    ExampleMiddleware::class,
+    'example' => ExampleMiddleware::class,
 
 ];
 ```
@@ -383,7 +383,7 @@ use App\Emitters\JsonResponseEmitter;
 
 return [
 
-    JsonResponseEmitter::class,
+    'json' => JsonResponseEmitter::class,
 
 ];
 ```
@@ -482,7 +482,7 @@ use App\Services\Demo\ExampleServiceProvider;
 
 return [
 
-    ExampleServiceProvider::class,
+    'example' => ExampleServiceProvider::class,
 
 ];
 ```
@@ -505,6 +505,7 @@ return [
 
     // Handlers //
     'errorHandler' => ErrorHandler::class,
+
     'shutdownHandler' => ShutdownHandler::class,
 ```
 
@@ -523,7 +524,7 @@ use App\Services\Database\DatabaseServiceProvider;
 
 return [
 
-    DatabaseServiceProvider::class,
+    'database' => DatabaseServiceProvider::class,
 
 ];
 ```

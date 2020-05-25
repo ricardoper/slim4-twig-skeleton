@@ -96,7 +96,7 @@ class HomeController extends ControllerAbstract
 
 
         // Emitters //
-        $this->setEmitter(PlainResponseEmitter::class);
+        $this->setEmitter('plain', PlainResponseEmitter::class);
 
 
         unset($request, $response, $arguments, $app, $container, $exampleService, $configs, $viewsConfigs, $logErrorsEnv);

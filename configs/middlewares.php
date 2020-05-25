@@ -5,6 +5,6 @@ use App\Middlewares\Demo\ExampleMiddleware;
 
 return [
 
-    ExampleMiddleware::class,
+    'example' => ExampleMiddleware::class,
 
 ];
